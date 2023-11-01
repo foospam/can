@@ -103,6 +103,10 @@ class PlaceContainer {
     static setPlaces(placeArray: Place[]): void {
         PlaceContainer.places = placeArray;
     }
+
+    static getPlaces() : Place[] {
+        return PlaceContainer.places;
+    }
 }
 
 export default PlaceContainer;

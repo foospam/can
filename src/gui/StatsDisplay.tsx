@@ -1,14 +1,19 @@
 import { Table } from "react-bootstrap";
 import Player from "../model/Player.ts";
 import PriceDisplay from "./PriceDisplay.tsx";
+import ContextDataObject from "../model/auxiliaries/ContextDataObject.ts";
 
 
 interface StatsDisplayProps {
     player: Player;
+    contextData : ContextDataObject
+    updateContext : (contextData : ContextDataObject) => void
 }
 
 function StatsDisplay({
-    player
+    player,
+    contextData,
+    updateContext
 }: StatsDisplayProps) {
 
 
@@ -28,16 +33,16 @@ function StatsDisplay({
         <div className="col-sm-4">
             <Table striped bordered className="statsTable">
                 <tbody>
-                    {getPlayerStat("Health", player.getHealth())}
-                    {getPlayerStat("Reputation", player.getReputation())}
-                    {getPlayerStat("Cash", player.getCash())}
-                    {getPlayerStat("Deposits", player.getDeposits())}
-                    {getPlayerStat("Debt", player.getDebtValue())}
-                    {getPlayerStat("Days", player.getDebtDays())}
-                    {getPlayerStat("Hold", player.getHold())}
+                    {getPlayerStat("Health", contextData.userStats.get("health") ?? 100)}
+                    {getPlayerStat("Reputation", contextData.userStats.get("reputation") ?? 1)}
+                    {getPlayerStat("Cash", contextData.userStats.get("cash") ?? 500)}
+                    {getPlayerStat("Deposits", contextData.userStats.get("deposits") ?? 0)}
+                    {getPlayerStat("Debt", contextData.userStats.get("debtValue") ?? 0)}
+                    {getPlayerStat("Days", contextData.userStats.get("debtDays") ?? 0)}
+                    {getPlayerStat("Hold", contextData.userStats.get("hold") ?? 10)}
                 </tbody>
             </Table>
-            <PriceDisplay player={player} place={player.getLocation()} />
+            <PriceDisplay player={player} place={player.getLocation()} contextData={contextData} />
         </div>
     );
 }

@@ -81,7 +81,7 @@ class Player /* implements Fighter */ {
     sellStuff(stuff: string, quantity: number): MethodAnswers {
         const totalIncome = this.location.getStuffPriceByName(stuff) * quantity;
 
-        if (this.stuffOnHand.get(stuff) || 0 < quantity) {
+        if ((this.stuffOnHand.get(stuff) ?? 0) < quantity) {
             return MethodAnswers.INSUFFICIENT_STASH;
         } else if (quantity === 0) {
             return MethodAnswers.QUANTITY_ZERO;

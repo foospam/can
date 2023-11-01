@@ -1,6 +1,6 @@
 import Stuff from "./Stuff";
 
-const stuffNames : string[] = [
+const stuffNames: string[] = [
     "Berry Bliss Bites",
     "Chocolate Chuckles",
     "Caramel Delight",
@@ -60,9 +60,18 @@ class StuffContainer {
         return this.stuffMap;
     }
 
-    getStuffNameList() : string[] {
+    getStuffNameList(): string[] {
         return this.stuffList.map(element => element.name);
     }
+
+    getStuffPrices() : Map<string, number> {
+        const stuffPrices: Map<string, number> = new Map<string, number>();
+        this.stuffList.map(element => {
+            stuffPrices.set(element.name, element.price);
+        })
+        return stuffPrices;
+    };
+
 }
 
 export default StuffContainer;

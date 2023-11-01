@@ -46,7 +46,7 @@ class Place {
     }
 
     getStuffPrices(): Map<string, number> {
-        return this.stuffContainer.getStuffMap();
+        return this.stuffContainer.getStuffPrices();
     }
 
     getStuffNames() : string[] {

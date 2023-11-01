@@ -3,15 +3,15 @@ import Player from "../Player";
 
 class ContextDataObject {
 
-    stuffPrices: Map<string, number> = new Map<string, number>();
-    stuffNames: string[] = []
-    stuffOnHand: Map<string, number>;
-    userStats: Map<string, number> = new Map<string, number>();
-    date: Date = new Date();
-    location: string;
+    public stuffPrices: Map<string, number> = new Map<string, number>();
+    public stuffNames: string[] = []
+    public stuffOnHand: Map<string, number>;
+    public userStats: Map<string, number> = new Map<string, number>();
+    public date: Date = new Date();
+    public location: string;
 
     constructor(player: Player) {
-        this.stuffPrices = player.getStuffOnHandMap();
+        this.stuffPrices = player.getLocation().getStuffPrices();
         this.stuffNames = player.getLocation().getStuffNames();
         this.stuffOnHand = player.getStuffOnHandMap();
         this.location = player.getLocation().getName();

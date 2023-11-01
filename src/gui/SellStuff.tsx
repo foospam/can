@@ -14,7 +14,7 @@ interface QuantitySelectorProps {
     selectedQuantity: number
 }
 
-interface ShopProps {
+interface SellStuffProps {
     state: State
     switchState: (stateName: string) => void
     player: Player
@@ -22,10 +22,7 @@ interface ShopProps {
     updateContext : (contextData : ContextDataObject) => void
 }
 
-function Shop({ state, switchState, player, contextData, updateContext}: ShopProps) {
-
-    console.log("Shop: contextData length "+contextData.length)
-    console.log("Shop: contextData type "+contextData.class)
+function SellStuff({ state, switchState, player, contextData, updateContext}: SellStuffProps) {
 
     const priceList: number[] = []
 
@@ -77,7 +74,10 @@ function Shop({ state, switchState, player, contextData, updateContext}: ShopPro
     }
 
     const plusButtonClass = (index: number): string => {
-        return ((totalPrice + priceList[index]) > totalFunds) ? "btn btn-primary disabled" : "btn btn-primary active";
+        const stuffName = contextData.stuffNames[index];
+        const qtyInHand = contextData.stuffOnHand.get(stuffName) ?? 0;
+        const selectedQty = countArray[index];
+        return (qtyInHand <= selectedQty) ? "btn btn-primary disabled" : "btn btn-primary active";
     }
 
     return (
@@ -92,7 +92,7 @@ function Shop({ state, switchState, player, contextData, updateContext}: ShopPro
                     decreaseCountArray={decreaseCountArray}
                     selectedQuantity={countArray[index]}
                 />)}
-            <BuyButton
+            <SellButton
                 stuffNameArray={stuffList}
                 quantityArray={countArray}
                 priceArray={priceList}
@@ -118,15 +118,16 @@ interface BuyButtonProps {
     updateContext : (contextData : ContextDataObject) => void
 }
 
-function BuyButton({ stuffNameArray, quantityArray, priceArray, player, switchState, contextData, updateContext }: BuyButtonProps) {
+function SellButton({ stuffNameArray, quantityArray, priceArray, player, switchState, contextData, updateContext }: BuyButtonProps) {
 
-    const buyStuff = (): void => {
+    const sellStuff = (): void => {
         quantityArray.map((element: number, index: number) => {
             if (element !== 0) {
-                player.buyStuff(stuffNameArray[index], quantityArray[index]);
+                console.log("Selling "+element+" "+index)
+                player.sellStuff(stuffNameArray[index], quantityArray[index]);
             }
         })
-        console.log("Hold: "+player.hold);
+
         updateContext(new ContextDataObject(player));
         switchState("MainSelectionMenu");
 
@@ -136,7 +137,7 @@ function BuyButton({ stuffNameArray, quantityArray, priceArray, player, switchSt
 
 
     return (
-        <button onClick={buyStuff}>Buy</button>
+        <button onClick={sellStuff}>Sell</button>
     )
 }
 
@@ -153,4 +154,4 @@ function QuantitySelector({ id, stuffName, minusButtonClass, plusButtonClass, in
 
 }
 
-export default Shop;
+export default SellStuff;
