@@ -44,6 +44,19 @@ class Place {
     updateStuffPrices(): void {
         this.stuffContainer.updateStuffPrices(GameSettings.RAMDOM_PRICE_VARIATION_PERCENTAGE);
     }
+
+    getStuffPrices(): Map<string, number> {
+        return this.stuffContainer.getStuffMap();
+    }
+
+    getStuffNames() : string[] {
+        return this.stuffContainer.getStuffNameList();
+    }
+
+    getName() : string {
+        return this.name;
+    }
+
 }
 
 export default Place;

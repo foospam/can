@@ -1,8 +1,7 @@
 import React, { useState } from 'react';
-import Player from "./Player.ts";
+import Player from '../model/Player.ts';
+import State from '../model/auxiliaries/State.ts';
 
-const player: Player = new Player();
-const priceList = [200, 100, 50, 30];
 
 interface QuantitySelectorProps {
     id: number,
@@ -10,17 +9,33 @@ interface QuantitySelectorProps {
     minusButtonClass: (index: number) => string;
     plusButtonClass: (index: number) => string;
     increaseCountArray: (event: React.MouseEvent<HTMLButtonElement>) => void,
-    decreaseCountArray: (event: React.MouseEvent<HTMLButtonElement>) => void
+    decreaseCountArray: (event: React.MouseEvent<HTMLButtonElement>) => void,
+    selectedQuantity: number
 }
 
-function Shop() {
+interface ShopProps {
+    state: State
+    switchState: (stateName: string) => void
+    player: Player
+}
+
+function Shop({ state, switchState, player }: ShopProps) {
 
 
-    const stuffList = ["a", "b", "c", "d"]
-    const totalFunds = player.funds;
+    const priceList: number[] = []
 
-    const [countArray, setCountArray] = useState<number[]>([0, 0, 0, 0]);
+    for (let i: number = 0; i < 8; i++) {
+        priceList.push(player.getLocation().getStuffPriceByNumber(i))
+    }
+    
+    const stuffList: string[] = [];
+    for (let i: number = 0; i < 8; i++) {
+        stuffList.push(player.getLocation().getStuffName(i))
+    }
 
+    const totalFunds = player.getCash();
+
+    const [countArray, setCountArray] = useState<number[]>([0, 0, 0, 0, 0, 0, 0, 0]);
     const [totalPrice, setTotalPrice] = useState<number>(0)
 
 
@@ -70,12 +85,16 @@ function Shop() {
                     plusButtonClass={plusButtonClass}
                     increaseCountArray={increaseCountArray}
                     decreaseCountArray={decreaseCountArray}
+                    selectedQuantity={countArray[index]}
                 />)}
-            <BuyButton 
-            stuffNameArray={stuffList}
-            quantityArray={countArray}
-            priceArray={priceList}
+            <BuyButton
+                stuffNameArray={stuffList}
+                quantityArray={countArray}
+                priceArray={priceList}
+                player={player}
+                switchState={switchState}
             />
+            <label>{player.hold}</label>
         </>
     )
 
@@ -85,17 +104,22 @@ function Shop() {
 interface BuyButtonProps {
     stuffNameArray: string[],
     quantityArray: number[],
-    priceArray: number[]
+    priceArray: number[],
+    player: Player
+    switchState : (stateName : string) => void
 }
 
-function BuyButton({ stuffNameArray, quantityArray, priceArray }: BuyButtonProps) {
+function BuyButton({ stuffNameArray, quantityArray, priceArray, player, switchState }: BuyButtonProps) {
 
     const buyStuff = (): void => {
         quantityArray.map((element: number, index: number) => {
             if (element !== 0) {
-                player.buyStuff(stuffNameArray[index], element, priceArray[index]);
+                player.buyStuff(stuffNameArray[index], quantityArray[index]);
             }
         })
+        console.log("Hold: "+player.hold);
+        switchState("MainSelectionMenu")
+
 
     }
 
@@ -105,12 +129,12 @@ function BuyButton({ stuffNameArray, quantityArray, priceArray }: BuyButtonProps
     )
 }
 
-function QuantitySelector({ id, stuffName, minusButtonClass, plusButtonClass, increaseCountArray, decreaseCountArray }: QuantitySelectorProps) {
+function QuantitySelector({ id, stuffName, minusButtonClass, plusButtonClass, increaseCountArray, decreaseCountArray, selectedQuantity }: QuantitySelectorProps) {
 
 
     return (
         <div>
-            <label>{stuffName}</label>
+            <label>{stuffName} : {selectedQuantity}</label>
             <button className={plusButtonClass(id)} id={String(id)} onClick={increaseCountArray}>+</button>
             <button className={minusButtonClass(id)} id={String(id)} onClick={decreaseCountArray}>-</button>
         </div>

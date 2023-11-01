@@ -17,6 +17,10 @@ class PlaceContainer {
     private static places: Place[] = [];
     private static placeDict : Map<string, Place>;
 
+    static {
+        PlaceContainer.initializePlaces();
+    }
+
     static initializePlaces(): void {
         PlaceContainer.places = [];
         PlaceContainer.placeDict = new Map<string, Place>;
@@ -28,6 +32,7 @@ class PlaceContainer {
             const place = new Place(placeName, placeCoordinates);
             PlaceContainer.places.push(place);
             PlaceContainer.placeDict.set(placeName, place);
+            console.log(placeName);
         }
     }
 

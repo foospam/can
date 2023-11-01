@@ -28,7 +28,7 @@ const stuffNames: string[] = [
 
 class Player /* implements Fighter */ {
     private maxHold: number;
-    private hold: number;
+    hold: number;
     private health: number;
     private hospital: Hospital;
     private reputation: number;
@@ -328,11 +328,19 @@ class Player /* implements Fighter */ {
         return this.stuffOnHand.get(stuff) || 0;
     }
 
+    getAllStuffOnHand() : Map<string, number> {
+        return this.stuffOnHand;
+    }
+
     setStuffOnHand(stuffOnHand: Map<string, number>): void {
         this.stuffOnHand = stuffOnHand;
     }
 
     getStuffOnHandMap(): Map<string, number> {
+        const newStuffOnHand : Map<string, number> = new Map<string, number>();
+        for(const [key, value] of this.stuffOnHand.entries()){
+            newStuffOnHand.set(key, value);
+        }
         return this.stuffOnHand;
     }
 

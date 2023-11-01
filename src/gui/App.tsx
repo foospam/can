@@ -1,34 +1,29 @@
-import React from "react";
-import { Container, Row } from "react-bootstrap";
-import MainDisplay from "./MainDisplayArea";
+import MainDisplayArea from "./MainDisplayArea";
 import StatsDisplay from "./StatsDisplay";
-import PriceDisplay from "./PriceDisplay";
+import Player from "../model/Player.ts";
+import React from "react";
+import State from "../model/auxiliaries/State.ts";
+import ContextDataObject from "../model/auxiliaries/ContextDataObject.ts";
+
+
+const state = new State();
+const newPlayer = new Player();
+const contextDataObject = new ContextDataObject(newPlayer);
+
 
 function App() {
-  return (
-    <Container fluid>
-      <Row>
-        {/* Left Main Display */}
-        <MainDisplay />
+    
+    const [contextData, setContextData] = React.useState(contextDataObject)
 
-        {/* Right Column */}
-        <StatsDisplay
-          imageUrl="your-image-url.jpg"
-          iconUrl1="icon-url1.png"
-          iconUrl2="icon-url2.png"
-          text1="Text 1"
-          text2="Text 2"
-        />
-        <PriceDisplay
-          imageUrl="your-image-url.jpg"
-          iconUrl1="icon-url3.png"
-          iconUrl2="icon-url4.png"
-          text1="Text 3"
-          text2="Text 4"
-        />
-      </Row>
-    </Container>
-  );
+
+    return (
+        <div className="container text-center">
+            <div className="row">
+                <MainDisplayArea state={state} player={newPlayer} contextData={[contextData, setContextData]}/>
+                <StatsDisplay player={newPlayer} contextData={[contextData, setContextData]}/>
+            </div>
+        </div>
+    );
 }
 
 export default App;

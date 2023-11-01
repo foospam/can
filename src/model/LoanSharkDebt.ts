@@ -1,7 +1,8 @@
 import MethodAnswers from './MethodAnswers.ts';
 import GameSettings from './GameSettings.ts';
-import EventFactory from "/model/events/EventFactory.ts";
-import TimeListener from "/model/controller/TimeListener.ts";
+import Player from './Player.ts';
+/* import EventFactory from "/model/events/EventFactory.ts";
+import TimeListener from "/model/controller/TimeListener.ts"; */
 
 class LoanSharkDebt implements TimeListener {
     public activeCredit: boolean;

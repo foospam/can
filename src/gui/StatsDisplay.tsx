@@ -1,44 +1,45 @@
-import React from "react";
-import { Col, Image, Table } from "react-bootstrap";
+import { Table } from "react-bootstrap";
+import Player from "../model/Player.ts";
+import PriceDisplay from "./PriceDisplay.tsx";
+
 
 interface StatsDisplayProps {
-  imageUrl: string;
-  iconUrl1: string;
-  iconUrl2: string;
-  text1: string;
-  text2: string;
+    player: Player;
 }
 
 function StatsDisplay({
-  imageUrl,
-  iconUrl1,
-  iconUrl2,
-  text1,
-  text2,
+    player
 }: StatsDisplayProps) {
-  return (
-    <Col className="mb-3">
-      <div className="rounded-lg bg-secondary p-3">
-        <Image src={imageUrl} roundedCircle width="100" height="100" className="mb-3" />
-        <Table striped bordered>
-          <tbody>
+
+
+    const getPlayerStat = (key: string, value: string | number) => {
+        return (
             <tr>
-              <td>
-                <img src={iconUrl1} alt="Icon 1" width="20" height="20" />
-              </td>
-              <td>{text1}</td>
+                    <td width="20%">
+                    {/* <img src={iconUrl1} alt="Icon 1" width="80%" height="80%" /> */}
+                </td>
+                <td width="80%">{key}: {value}</td>
             </tr>
-            <tr>
-              <td>
-                <img src={iconUrl2} alt="Icon 2" width="20" height="20" />
-              </td>
-              <td>{text2}</td>
-            </tr>
-          </tbody>
-        </Table>
-      </div>
-    </Col>
-  );
+        )
+    }
+
+
+    return (
+        <div className="col-sm-4">
+            <Table striped bordered className="statsTable">
+                <tbody>
+                    {getPlayerStat("Health", player.getHealth())}
+                    {getPlayerStat("Reputation", player.getReputation())}
+                    {getPlayerStat("Cash", player.getCash())}
+                    {getPlayerStat("Deposits", player.getDeposits())}
+                    {getPlayerStat("Debt", player.getDebtValue())}
+                    {getPlayerStat("Days", player.getDebtDays())}
+                    {getPlayerStat("Hold", player.getHold())}
+                </tbody>
+            </Table>
+            <PriceDisplay player={player} place={player.getLocation()} />
+        </div>
+    );
 }
 
 export default StatsDisplay;

@@ -55,6 +55,14 @@ class StuffContainer {
             stuff.randomPriceUpdate(percentage);
         }
     }
+
+    getStuffMap() {
+        return this.stuffMap;
+    }
+
+    getStuffNameList() : string[] {
+        return this.stuffList.map(element => element.name);
+    }
 }
 
 export default StuffContainer;
