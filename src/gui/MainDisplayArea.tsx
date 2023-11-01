@@ -5,6 +5,7 @@ import React, { Context } from "react";
 import Player from "../model/Player";
 import ContextDataObject from "../model/auxiliaries/ContextDataObject";
 import SellStuff from "./SellStuff";
+import BusStation from "./BusStation"
 
 interface MainDisplayAreaProps {
   state: State
@@ -38,6 +39,12 @@ function MainDisplayArea({ state, player, contextData, updateContext }: MainDisp
       case "SellStuff": {
         return (
           <SellStuff switchState={switchState} player={player} contextData={contextData} updateContext={updateContext}/>
+        )
+      }
+      break;
+      case "BusStation": {
+        return (
+          <BusStation switchState={switchState} player={player} contextData={contextData} updateContext={updateContext}/>
         )
       }
       break;
