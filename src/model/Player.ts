@@ -251,15 +251,16 @@ class Player /* implements Fighter */ {
         return this.health;
     }
 
-/*     setHealth(health: number): void {
+    setHealth(health: number): void {
         if (health > 0) {
             this.health = health;
         } else {
             this.health = 0;
             this.isInBattle = false;
-            EventFactory.pushGameOverEvent();
+            /* EventFactory.pushGameOverEvent(); */
         }
-    } */
+    }
+
 
     getReputation(): number {
         return this.reputation;
@@ -295,7 +296,7 @@ class Player /* implements Fighter */ {
     }
 
     getDebtDays(): number {
-        if (this.debt) return this.debt.value;
+        if (this.debt) return this.debt.paymentPeriod;
         return 0;
     }
 

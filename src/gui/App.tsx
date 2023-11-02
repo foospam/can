@@ -6,6 +6,10 @@ import State from "../model/auxiliaries/State.ts";
 import ContextDataObject from "../model/auxiliaries/ContextDataObject.ts";
 
 
+const date = new Date();
+console.log(date.toDateString("yyyy-MM-dd"));
+date.setDate(date.getDate() + 1)
+console.log(date.toDateString("yyyy-MM-dd"));
 const state = new State();
 const newPlayer = new Player();
 const contextDataObject = new ContextDataObject(newPlayer);

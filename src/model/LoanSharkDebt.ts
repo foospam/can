@@ -86,7 +86,8 @@ class LoanSharkDebt implements TimeListener {
         const variablePaymentPeriod = GameSettings.MAX_PAYMENT_PERIOD - GameSettings.MIN_PAYMENT_PERIOD;
         const normalizedQuantity = (maxCredit - quantity) / maxCredit;
         const factor = 1 / Math.pow(variablePaymentPeriod, normalizedQuantity);
-        const initialPaymentPeriod = variablePaymentPeriod * (1 - factor) + GameSettings.MIN_PAYMENT_PERIOD;
+        const initialPaymentPeriod = Math.floor(variablePaymentPeriod * (1 - factor) + GameSettings.MIN_PAYMENT_PERIOD);
+
 
         if (this.paymentPeriod <= 0) {
             return initialPaymentPeriod;

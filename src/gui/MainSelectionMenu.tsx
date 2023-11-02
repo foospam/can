@@ -4,6 +4,7 @@ import {ReactDOM}  from 'react-dom/client'
 import Player from "../model/Player";
 import ContextDataObject from "../model/auxiliaries/ContextDataObject";
 
+
 interface MainSelectionMenuProps {
   switchState : (stateName : string) => void
   player : Player
@@ -25,6 +26,18 @@ function MainSelectionMenu({switchState, player, contextData, updateContext} : M
     switchState("BusStation");
   }
 
+  const goToBank = () => {
+    switchState("Bank");
+  }
+
+  const goToLoanShark = () => {
+    switchState("LoanSharkScreen");
+  }
+
+  const goToHospital = () => {
+    switchState("HospitalScreen");
+  }
+
 
     return (
         <div className="container h-100">
@@ -39,13 +52,13 @@ function MainSelectionMenu({switchState, player, contextData, updateContext} : M
                 <button className="btn btn-primary btn-block" onClick={goToBusStation}>Go to bus station</button>
               </div>
               <div className="col-4 d-flex align-items-center justify-content-center">
-                <button className="btn btn-primary btn-block">Button 4</button>
+                <button className="btn btn-primary btn-block" onClick={goToBank}>Go to the bank</button>
               </div>
               <div className="col-4 d-flex align-items-center justify-content-center">
-                <button className="btn btn-primary btn-block">Button 5</button>
+                <button className="btn btn-primary btn-block" onClick={goToLoanShark}>See the Loan Shark</button>
               </div>
               <div className="col-4 d-flex align-items-center justify-content-center">
-                <button className="btn btn-primary btn-block">Button 6</button>
+                <button className="btn btn-primary btn-block" onClick={goToHospital}>Go see a doctor</button>
               </div>
               <div className="col-4 d-flex align-items-center justify-content-center">
                 <button className="btn btn-primary btn-block">Button 7</button>

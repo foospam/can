@@ -6,6 +6,9 @@ import Player from "../model/Player";
 import ContextDataObject from "../model/auxiliaries/ContextDataObject";
 import SellStuff from "./SellStuff";
 import BusStation from "./BusStation"
+import Bank from "./Bank";
+import LoanSharkScreen from "./LoanSharkScreen";
+import HospitalScreen from "./HospitalScreen";
 
 interface MainDisplayAreaProps {
   state: State
@@ -45,6 +48,24 @@ function MainDisplayArea({ state, player, contextData, updateContext }: MainDisp
       case "BusStation": {
         return (
           <BusStation switchState={switchState} player={player} contextData={contextData} updateContext={updateContext}/>
+        )
+      }
+      break;
+      case "Bank": {
+        return (
+          <Bank switchState={switchState} player={player} contextData={contextData} updateContext={updateContext}/>
+        )
+      }
+      break;
+      case "LoanSharkScreen": {
+        return (
+          <LoanSharkScreen switchState={switchState} player={player} contextData={contextData} updateContext={updateContext}/>
+        )
+      }
+      break;
+      case "HospitalScreen": {
+        return (
+          <HospitalScreen switchState={switchState} player={player} contextData={contextData} updateContext={updateContext}/>
         )
       }
       break;
