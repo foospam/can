@@ -2,7 +2,8 @@ import React, { useState } from 'react';
 import Player from '../model/Player.ts';
 import State from '../model/auxiliaries/State.ts';
 import ContextDataObject from '../model/auxiliaries/ContextDataObject.ts';
-import { QuantitySelector, QuantitySelectorProps } from './CommercialTransaction.tsx';
+import { QuantitySelector } from './CommercialTransaction.tsx';
+
 
 
 interface ShopProps {
@@ -11,15 +12,10 @@ interface ShopProps {
     player: Player
     contextData: ContextDataObject
     updateContext: (contextData: ContextDataObject) => void
+    mode: string
 }
 
-function Shop({ state, switchState, player, contextData, updateContext }: ShopProps) {
-
-    console.log("Shop: contextData length " + contextData.length)
-    console.log("Shop: contextData type " + contextData.class)
-
-    const [done, setDone] = React.useState(false);
-
+function Shop({ state, switchState, player, contextData, updateContext, mode }: ShopProps) {
 
     const priceList: number[] = []
 
@@ -36,6 +32,7 @@ function Shop({ state, switchState, player, contextData, updateContext }: ShopPr
 
     const [countArray, setCountArray] = useState<number[]>([0, 0, 0, 0, 0, 0, 0, 0]);
     const [totalPrice, setTotalPrice] = useState<number>(0)
+    const [done, setDone] = useState<boolean>(false)
 
 
     const updateTotal = (quantityArray: number[], priceArray: number[]): void => {
@@ -46,7 +43,13 @@ function Shop({ state, switchState, player, contextData, updateContext }: ShopPr
         setTotalPrice(total);
         console.log(total);
     }
-
+    const goBack = () => {
+        if (done === true) {
+            player.getGameDate().updateDate(1);
+            updateContext(new ContextDataObject(player));
+        }
+        switchState("MainSelectionMenu");
+    }
 
     const increaseCountArray = (event: React.MouseEvent<HTMLButtonElement>) => {
         const index = Number(event.target.id);
@@ -66,75 +69,42 @@ function Shop({ state, switchState, player, contextData, updateContext }: ShopPr
         updateTotal(newValueArray, priceList);
     }
 
-    const minusButtonClass = (index: number): string => {
+    const minusButtonClassSell = (index: number): string => {
         return (countArray[index] <= 0) ? "btn btn-primary disabled" : "btn btn-primary active";
     }
 
-    const plusButtonClass = (index: number): string => {
+    const plusButtonClassSell = (index: number): string => {
+        const stuffName = contextData.stuffNames[index];
+        const qtyInHand = contextData.stuffOnHand.get(stuffName) ?? 0;
+        const selectedQty = countArray[index];
+        return (qtyInHand <= selectedQty) ? "btn btn-primary disabled" : "btn btn-primary active";
+    }
+
+    const minusButtonClassBuy = (index: number): string => {
+        return (countArray[index] <= 0) ? "btn btn-primary disabled" : "btn btn-primary active";
+    }
+
+    const plusButtonClassBuy = (index: number): string => {
         return ((totalPrice + priceList[index]) > totalFunds) ? "btn btn-primary disabled" : "btn btn-primary active";
     }
 
-    const goBack = () => {
-        if (done === true) {
-            player.getGameDate().updateDate(1);
-            updateContext(new ContextDataObject(player));
-        }
-        switchState("MainSelectionMenu");
+
+    const sellStuff = (): void => {
+        countArray.map((element: number, index: number) => {
+            if (element !== 0) {
+                console.log("Selling " + element + " " + index)
+                player.sellStuff(stuffList[index], countArray[index]);
+            }
+        })
+
+        setDone(true);
+        updateContext(new ContextDataObject(player));
     }
 
-    return (
-        <div className='row h-100' id="buyStuff">
-        <div className='col-8'>
-            <div className="row">
-            {stuffList.map((element, index) =>
-                <QuantitySelector
-                    id={index}
-                    stuffName={element}
-                    minusButtonClass={minusButtonClass}
-                    plusButtonClass={plusButtonClass}
-                    increaseCountArray={increaseCountArray}
-                    decreaseCountArray={decreaseCountArray}
-                    selectedQuantity={countArray[index]}
-                />)}
-            <BuyButton
-                stuffNameArray={stuffList}
-                quantityArray={countArray}
-                priceArray={priceList}
-                player={player}
-                switchState={switchState}
-                contextData={contextData}
-                updateContext={updateContext}
-                setDone={setDone}
-            />
-            <button type="button" id="exit" onClick={goBack}>
-                Back
-            </button>
-            <label>{player.hold}</label>
-        </div>
-        </div>
-        </div>
-    )
-
-
-}
-
-interface BuyButtonProps {
-    stuffNameArray: string[],
-    quantityArray: number[],
-    priceArray: number[],
-    player: Player
-    switchState: (stateName: string) => void
-    contextData: ContextDataObject
-    updateContext: (contextData: ContextDataObject) => void
-    setDone: (bool: boolean) => void
-}
-
-function BuyButton({ stuffNameArray, quantityArray, priceArray, player, switchState, contextData, updateContext, setDone }: BuyButtonProps) {
-
     const buyStuff = (): void => {
-        quantityArray.map((element: number, index: number) => {
+        countArray.map((element: number, index: number) => {
             if (element !== 0) {
-                player.buyStuff(stuffNameArray[index], quantityArray[index]);
+                player.buyStuff(stuffList[index], countArray[index]);
             }
         })
         console.log("Hold: " + player.hold);
@@ -142,10 +112,38 @@ function BuyButton({ stuffNameArray, quantityArray, priceArray, player, switchSt
         updateContext(new ContextDataObject(player));
     }
 
-
     return (
-        <button onClick={buyStuff}>Buy</button>
+        <div className='row h-100' id={mode == "buy" ? "buyStuff" : "sellStuff"}>
+            <div className='col-8'>
+                <div className="row shopRow">
+                    {stuffList.map((element, index) =>
+                        <QuantitySelector
+                            id={index}
+                            stuffName={element}
+                            minusButtonClass={mode === "buy" ? minusButtonClassBuy : minusButtonClassSell}
+                            plusButtonClass={mode === "buy" ? plusButtonClassBuy : plusButtonClassSell}
+                            increaseCountArray={increaseCountArray}
+                            decreaseCountArray={decreaseCountArray}
+                            selectedQuantity={countArray[index]}
+                        />)}
+                </div>
+                <div className="row">
+                    <div className="col-6">
+                        <button type="button" id="exit" onClick={mode === "buy" ? buyStuff : sellStuff}>
+                            {mode === "buy" ? "Buy" : "Sell"}
+                        </button>
+                    </div>
+                    <div className="col-6">
+                        <button type="button" id="exit" onClick={goBack}>
+                            Back
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
     )
+
+
 }
 
 export default Shop;

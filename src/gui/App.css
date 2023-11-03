@@ -99,21 +99,29 @@
     align-items: center;
     border-width: 10px;
     border-color: black;
+    align-items: flex-end;
   }
-
-
 
   #sellStuff {
     background-image: url("../assets/images/super-trenchcoat.jpg");
     align-items: center;
     border-width: 10px;
     border-color: black;
+    align-items: flex-end;
   }
 
-  #sellStuff > .col-8 {
-    background-color: #888;
+  .shopRow {
+    background-color: rgba(0,0,0,.7);
     padding: 10px;
     border-radius: 10px;
+    margin: 10px;
+  }
+
+  .shopRow > * {
+    color: white;
+    font-size: smaller;
+    font-weight: 500;
+    font-size-adjust: calc();
   }
 
   #busStation {

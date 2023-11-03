@@ -1,5 +1,5 @@
 import State from "../model/auxiliaries/State";
-import Shop from "./Shop";
+import Shop from "./Shop2";
 import { ReactDOM } from 'react-dom/client'
 import Player from "../model/Player";
 import ContextDataObject from "../model/auxiliaries/ContextDataObject";

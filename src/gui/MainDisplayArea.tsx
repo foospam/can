@@ -1,10 +1,9 @@
 import MainSelectionMenu from "./MainSelectionMenu";
 import State from "../model/auxiliaries/State";
-import Shop from "./Shop"
 import React, { Context } from "react";
 import Player from "../model/Player";
 import ContextDataObject from "../model/auxiliaries/ContextDataObject";
-import SellStuff from "./SellStuff";
+import Shop from "./Shop";
 import BusStation from "./BusStation"
 import Bank from "./Bank";
 import LoanSharkScreen from "./LoanSharkScreen";
@@ -40,13 +39,13 @@ function MainDisplayArea({ state, player, contextData, updateContext }: MainDisp
         break;
       case "BuyShop": {
         return (
-          <Shop switchState={switchState} player={player} contextData={contextData} updateContext={updateContext}/>
+          <Shop switchState={switchState} player={player} contextData={contextData} updateContext={updateContext} mode="buy"/>
         )
       }
       break;
       case "SellStuff": {
         return (
-          <SellStuff switchState={switchState} player={player} contextData={contextData} updateContext={updateContext}/>
+          <Shop switchState={switchState} player={player} contextData={contextData} updateContext={updateContext} mode="sell"/>
         )
       }
       break;
