@@ -1,5 +1,5 @@
-
 import Player from "../Player";
+import GameDate from "./GameDate";
 
 class ContextDataObject {
 
@@ -7,8 +7,9 @@ class ContextDataObject {
     public stuffNames: string[] = []
     public stuffOnHand: Map<string, number>;
     public userStats: Map<string, number> = new Map<string, number>();
-    public date: Date = new Date();
+    public date: GameDate;
     public location: string;
+
 
     constructor(player: Player) {
         this.stuffPrices = player.getLocation().getStuffPrices();
@@ -22,6 +23,7 @@ class ContextDataObject {
         this.userStats.set("debtValue", player.getDebtValue());
         this.userStats.set("debtDays", player.getDebtDays());
         this.userStats.set("hold", player.getHold());
+        this.date = player.getGameDate();        
     }
 }
 

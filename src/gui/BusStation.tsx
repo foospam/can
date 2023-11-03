@@ -21,8 +21,9 @@ function BusStation({ state, switchState, player, contextData, updateContext }: 
 
         return (
         <div className="col-4 d-flex align-items-center justify-content-center">
-            <button className={ticketPrices[index] <= player.getCash() ?  "btn btn-primary btn-block" : "btn btn-primary btn-block disabled"} onClick={() => {
+            <button className={ticketPrices[index] <= player.getCash() ?  "btn btn-transp btn-block w-100 h-100 p-2" : "btn btn-transp btn-block disabled w-100 h-100 p-2"} onClick={() => {
                 player.travel(place, ticketPrices[index]);
+                player.getGameDate().updateDate(1);
                 updateContext(new ContextDataObject(player));
                 switchState("MainSelectionMenu");
             }}>

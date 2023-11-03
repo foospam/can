@@ -51,7 +51,7 @@ function HospitalScreen({ state, switchState, player, contextData, updateContext
     return (
 
 
-        <div className="container h-100">
+        
             <div className="row h-100">
                 <div className="d-flex align-items-center justify-content-center">
                     <label>Welcome to the hospital!
@@ -71,7 +71,7 @@ function HospitalScreen({ state, switchState, player, contextData, updateContext
                     <label>{messageValue}</label>
                 </div>
             </div>
-        </div>
+        
 
     )
 

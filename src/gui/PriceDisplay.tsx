@@ -26,8 +26,12 @@ function PriceDisplay({
     return (
         <>
         <label id="schoolLabel">Candy prices in {place.name}</label>
-        <Table bordered>
+        <Table>
+            <thead>
+            <tr><td>Name</td><td>Price</td><td>Stashed</td></tr>
+            </thead>
             <tbody>
+            
                 {stuffAndPrice(place.getStuffName(0))}
                 {stuffAndPrice(place.getStuffName(1))}
                 {stuffAndPrice(place.getStuffName(2))}

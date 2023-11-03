@@ -30,9 +30,10 @@ function StatsDisplay({
 
 
     return (
-        <div className="col-sm-4">
+        <div className="col-4">
             <Table striped bordered className="statsTable">
                 <tbody>
+                {getPlayerStat("Date", contextData.date.toString()  ?? "")}
                     {getPlayerStat("Health", contextData.userStats.get("health") ?? 100)}
                     {getPlayerStat("Reputation", contextData.userStats.get("reputation") ?? 1)}
                     {getPlayerStat("Cash", contextData.userStats.get("cash") ?? 500)}

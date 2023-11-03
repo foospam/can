@@ -19,8 +19,13 @@ interface MainDisplayAreaProps {
 
 function MainDisplayArea({ state, player, contextData, updateContext }: MainDisplayAreaProps) {
 
-  const [internalState, setInternalState] = React.useState<string>("MainSelectionMenu");
+/* 
+  const MainDisplayArea = React.useRef();
+  MainDisplayArea.current = {
+    addEvent : (event : Event) => setEventList()
+  } */
 
+  const [internalState, setInternalState] = React.useState<string>("MainSelectionMenu");
   const switchState = (state: string) : void => {
     setInternalState(state);
   }
@@ -76,7 +81,7 @@ function MainDisplayArea({ state, player, contextData, updateContext }: MainDisp
 
   return (
 
-    <div className="col-sm-8" id="MainDisplayArea">
+    <div className="col-8" id="mainDisplayArea">
       {currentState(internalState)}
     </div>
   );

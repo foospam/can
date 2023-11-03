@@ -18,18 +18,21 @@ interface SellStuffProps {
     state: State
     switchState: (stateName: string) => void
     player: Player
-    contextData : ContextDataObject
-    updateContext : (contextData : ContextDataObject) => void
+    contextData: ContextDataObject
+    updateContext: (contextData: ContextDataObject) => void
 }
 
-function SellStuff({ state, switchState, player, contextData, updateContext}: SellStuffProps) {
+function SellStuff({ state, switchState, player, contextData, updateContext }: SellStuffProps) {
+
+    const [sold, setSold] = React.useState(false);
+
 
     const priceList: number[] = []
 
     for (let i: number = 0; i < 8; i++) {
         priceList.push(player.getLocation().getStuffPriceByNumber(i))
     }
-    
+
     const stuffList: string[] = [];
     for (let i: number = 0; i < 8; i++) {
         stuffList.push(player.getLocation().getStuffName(i))
@@ -39,6 +42,7 @@ function SellStuff({ state, switchState, player, contextData, updateContext}: Se
 
     const [countArray, setCountArray] = useState<number[]>([0, 0, 0, 0, 0, 0, 0, 0]);
     const [totalPrice, setTotalPrice] = useState<number>(0)
+    const [done, setDone] = useState<boolean>(false)
 
 
     const updateTotal = (quantityArray: number[], priceArray: number[]): void => {
@@ -49,7 +53,13 @@ function SellStuff({ state, switchState, player, contextData, updateContext}: Se
         setTotalPrice(total);
         console.log(total);
     }
-
+    const goBack = () => {
+        if (done === true) {
+            player.getGameDate().updateDate(1);
+            updateContext(new ContextDataObject(player));
+        }
+        switchState("MainSelectionMenu");
+    }
 
     const increaseCountArray = (event: React.MouseEvent<HTMLButtonElement>) => {
         const index = Number(event.target.id);
@@ -81,7 +91,9 @@ function SellStuff({ state, switchState, player, contextData, updateContext}: Se
     }
 
     return (
-        <>
+        <div className='row h-100' id="sellStuff">
+            <div className='col-8'>
+                <div className="row">
             {stuffList.map((element, index) =>
                 <QuantitySelector
                     id={index}
@@ -92,7 +104,9 @@ function SellStuff({ state, switchState, player, contextData, updateContext}: Se
                     decreaseCountArray={decreaseCountArray}
                     selectedQuantity={countArray[index]}
                 />)}
-            <SellButton
+                </div>
+                <div className="row">
+                <SellButton
                 stuffNameArray={stuffList}
                 quantityArray={countArray}
                 priceArray={priceList}
@@ -100,9 +114,17 @@ function SellStuff({ state, switchState, player, contextData, updateContext}: Se
                 switchState={switchState}
                 contextData={contextData}
                 updateContext={updateContext}
+                setDone={setDone}
+                
             />
-            <label>{player.hold}</label>
-        </>
+            <div className="col-6">
+            <button type="button" id="exit" onClick={goBack}>
+                Back
+            </button>
+            </div>
+                </div>
+                </div>
+        </div>
     )
 
 
@@ -113,31 +135,32 @@ interface BuyButtonProps {
     quantityArray: number[],
     priceArray: number[],
     player: Player
-    switchState : (stateName : string) => void
-    contextData : ContextDataObject
-    updateContext : (contextData : ContextDataObject) => void
+    switchState: (stateName: string) => void
+    contextData: ContextDataObject
+    updateContext: (contextData: ContextDataObject) => void
+    setDone: (bool: boolean) => void
 }
 
-function SellButton({ stuffNameArray, quantityArray, priceArray, player, switchState, contextData, updateContext }: BuyButtonProps) {
+function SellButton({ stuffNameArray, quantityArray, priceArray, player, switchState, contextData, updateContext, setDone }: BuyButtonProps) {
+
 
     const sellStuff = (): void => {
         quantityArray.map((element: number, index: number) => {
             if (element !== 0) {
-                console.log("Selling "+element+" "+index)
+                console.log("Selling " + element + " " + index)
                 player.sellStuff(stuffNameArray[index], quantityArray[index]);
             }
         })
 
+        setDone(true);
         updateContext(new ContextDataObject(player));
-        switchState("MainSelectionMenu");
-
-
-
     }
 
 
     return (
+        <div className="col-6">
         <button onClick={sellStuff}>Sell</button>
+        </div>
     )
 }
 
@@ -145,10 +168,18 @@ function QuantitySelector({ id, stuffName, minusButtonClass, plusButtonClass, in
 
 
     return (
-        <div>
-            <label>{stuffName} : {selectedQuantity}</label>
+        <div className="col-6">
+            <div className="row">
+                <div className="col-8">
+            <label>{stuffName   } : {selectedQuantity}</label>
+            </div>
+            <div className="col-2">
             <button className={plusButtonClass(id)} id={String(id)} onClick={increaseCountArray}>+</button>
+            </div>
+            <div className="col-2">
             <button className={minusButtonClass(id)} id={String(id)} onClick={decreaseCountArray}>-</button>
+            </div>
+            </div>
         </div>
     );
 

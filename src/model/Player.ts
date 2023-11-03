@@ -13,6 +13,7 @@ import LoanSharkDebt from './LoanSharkDebt.ts';
 import Arm from './goods/Arm.ts';
 import Holster from './goods/Holster.ts';
 import DisplaySymbols from './goods/DisplaySymbols.ts';
+import GameDate from './auxiliaries/GameDate.ts';
 
 const stuffNames: string[] = [
     "Berry Bliss Bites",
@@ -41,6 +42,7 @@ class Player /* implements Fighter */ {
     private holster: Holster;
     private icon: string = DisplaySymbols.PLAYER;
     private isInBattle: boolean;
+    private date : GameDate;
 
     constructor() {
         this.armInHand = new Arm("Nothing",0,0,0,false);
@@ -56,6 +58,8 @@ class Player /* implements Fighter */ {
         this.bankAccount = new BankAccount(this);
         this.location = PlaceContainer.getRandomPlace();
         this.stuffOnHand = new Map<string, number>();
+        this.date = new GameDate();
+        this.date.subscribe(this.debt);
         for (const name of stuffNames) this.stuffOnHand.set(name, 0);
     }
 
@@ -395,6 +399,10 @@ class Player /* implements Fighter */ {
 
     getActiveCredit(): boolean {
         return this.debt.activeCredit;
+    }
+
+    getGameDate() : GameDate {
+        return this.date;
     }
 }
 

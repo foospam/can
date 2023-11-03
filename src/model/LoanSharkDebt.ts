@@ -1,6 +1,7 @@
 import MethodAnswers from './MethodAnswers.ts';
 import GameSettings from './GameSettings.ts';
 import Player from './Player.ts';
+import TimeListener from './auxiliaries/TimeListener.ts';
 /* import EventFactory from "/model/events/EventFactory.ts";
 import TimeListener from "/model/controller/TimeListener.ts"; */
 
@@ -26,7 +27,7 @@ class LoanSharkDebt implements TimeListener {
             return MethodAnswers.CURRENT_CREDIT_EXCEEDED;
         } else {
             this.value += quantity;
-            player.cash += quantity;
+            player.setCash(player.getCash() + quantity);
             this.paymentPeriod = this.getInitialPaymentPeriod(player, quantity);
             this.activeCredit = true;
             return MethodAnswers.SUCCESS;
@@ -34,17 +35,17 @@ class LoanSharkDebt implements TimeListener {
     }
 
     payBack(player: Player, quantity: number): MethodAnswers {
-        if (quantity > player.cash) {
+        if (quantity > player.getCash()) {
             return MethodAnswers.INSUFFICIENT_MONEY;
         } else if (quantity < this.value / 10) {
             return MethodAnswers.QUANTITY_NOT_WORTH_THE_FUSS;
         } else {
             if (quantity > this.value) {
-                player.cash -= this.value;
+                player.setCash(player.getCash() - this.value);
                 this.value = 0;
             } else {
                 this.value -= quantity;
-                player.cash -= quantity;
+                player.setCash(player.getCash() - quantity);
             }
 
             if (this.value == 0) {
@@ -60,7 +61,7 @@ class LoanSharkDebt implements TimeListener {
         this.paymentPeriod -= days;
         if (this.paymentPeriod == -1) {
             this.overdue += 1;
-            EventFactory.pushDebtEvent();
+            /* EventFactory.pushDebtEvent(); */
         }
     }
 
@@ -69,16 +70,16 @@ class LoanSharkDebt implements TimeListener {
     }
 
     private getMaxCredit(player: Player): number {
-        const reputation = player.reputation;
+        const reputation = player.getReputation();
         if (reputation <= 0) {
             return Math.min(GameSettings.MIN_LOAN * 2, GameSettings.BASIC_LOAN / 2);
         } else {
-            return player.reputation * GameSettings.BASIC_LOAN - 1;
+            return player.getReputation() * GameSettings.BASIC_LOAN - 1;
         }
     }
 
     private getInitialPaymentPeriod(player: Player, quantity: number): number {
-        if (player.reputation <= 0) {
+        if (player.getReputation() <= 0) {
             return GameSettings.MAX_PAYMENT_PERIOD / 2;
         }
 
