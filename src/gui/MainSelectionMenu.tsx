@@ -5,7 +5,7 @@ import Player from "../model/Player";
 import ContextDataObject from "../model/auxiliaries/ContextDataObject";
 import { Modal, Button } from "react-bootstrap";
 import React from 'react';
-import { ReclaimDebtEventModal } from "./EventScreens";
+import { ReclaimDebtEventModal, GameOverEventModal} from "./EventScreens";
 import EventQueue from "../model/events/EventQueue";
 import { EventType, EventName } from "../model/events/EventName";
 import Event from "../model/events/Event";
@@ -55,14 +55,6 @@ function MainSelectionMenu({ switchState, player, contextData, updateContext, ev
     updateContext(new ContextDataObject(player));
     setShowPopup(false);
   }
-  /* const [currentEvent, setCurrentEvent] = React.useState<Event | null>(); */
-  const [showReclaimDebtEvent, setShowReclaimDebtEvent] = React.useState<boolean>(false);
-
-
-  /* const nextEvent : Event | null = EventQueue.poll();
-  console.log("NextEvent: "+nextEvent);
-  console.log(nextEvent);
- */
 
   const currentEvent = eventQueue.shift();
   console.log(currentEvent);
@@ -71,13 +63,31 @@ function MainSelectionMenu({ switchState, player, contextData, updateContext, ev
   const renderReclaimDebtEvent = () => {
     if (contextData.userStats.get("debtDays") === -1) {
       console.log("Reclaiming debt event");
-      return (<ReclaimDebtEventModal   
+      return (<ReclaimDebtEventModal
         player={player}
         updateContext={updateContext} />)
     }
   }
 
-  console.log("Show reclaim debt event "+showReclaimDebtEvent)
+  const renderDeathEvent = () => {
+    if (contextData.userStats.get("health") <= 0) {
+      console.log("Death event");
+      return (<GameOverEventModal />)
+    }
+  }
+
+  const renderEvents = () => {
+    if (contextData.currentEvent !== null) {
+      switch (contextData.currentEvent.eventType) {
+        case EventType.RECLAIM_DEBT_EVENT: {
+          console.log("Reclaiming debt event");
+          return (<ReclaimDebtEventModal
+            player={player}
+            updateContext={updateContext} />)
+        }
+      }
+    }
+  }
 
 
   const goToShop = () => {
@@ -140,6 +150,7 @@ function MainSelectionMenu({ switchState, player, contextData, updateContext, ev
         </div>
         <PopUpModal show={showPopup} handleClose={handleClosePopup} text={"All right! Let's do nothing and let us see what the new day brings you!"} />
         {renderReclaimDebtEvent()}
+        {renderDeathEvent()}
       </div>
     </>
   )

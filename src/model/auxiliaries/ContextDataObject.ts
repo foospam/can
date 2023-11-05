@@ -1,5 +1,7 @@
 import Player from "../Player";
 import GameDate from "./GameDate";
+import Event from "../events/Event";
+import EventQueue from "../events/EventQueue";
 
 class ContextDataObject {
 
@@ -9,7 +11,7 @@ class ContextDataObject {
     public userStats: Map<string, number> = new Map<string, number>();
     public date: GameDate;
     public location: string;
-
+    public currentEvent: Event | null;
 
     constructor(player: Player) {
         this.stuffPrices = player.getLocation().getStuffPrices();
@@ -25,6 +27,7 @@ class ContextDataObject {
         this.userStats.set("hold", player.getHold());
         this.userStats.set("debtOverdue", player.getOverdue())
         this.date = player.getGameDate();
+        this.currentEvent = EventQueue.poll();
     }
 }
 

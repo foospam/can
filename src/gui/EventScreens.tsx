@@ -67,3 +67,30 @@ export function ReclaimDebtEventModal({ player, updateContext }: ReclaimDebtEven
         </div>
     )
 }
+
+
+export function GameOverEventModal() {
+
+    const text = "You have been injured very badly. You must go to the real hospital and explain it to your parents. "+
+    "\nYour days as a candy smuggler are over!! Push F5 to start a new game. "
+
+    return (
+        <div className="container h100">
+            <div className="row h-100">
+                <div className="col-12 d-flex align-items-center justify-content-center">
+                    <Modal show={true} onHide={() => {}} dialog-class-name="modal-center">
+                        <Modal.Body>
+                            <p>{text}</p>
+                        </Modal.Body>
+                        <Modal.Footer>
+                            <Button variant="secondary" onClick={() => {}}>
+                                Close
+                            </Button>
+                        </Modal.Footer>
+                    </Modal>
+                </div>
+            </div>
+        </div>
+    )
+
+}
