@@ -23,7 +23,8 @@ class ContextDataObject {
         this.userStats.set("debtValue", player.getDebtValue());
         this.userStats.set("debtDays", player.getDebtDays());
         this.userStats.set("hold", player.getHold());
-        this.date = player.getGameDate();        
+        this.userStats.set("debtOverdue", player.getOverdue())
+        this.date = player.getGameDate();
     }
 }
 

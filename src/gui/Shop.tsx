@@ -70,22 +70,22 @@ function Shop({ state, switchState, player, contextData, updateContext, mode }: 
     }
 
     const minusButtonClassSell = (index: number): string => {
-        return (countArray[index] <= 0) ? "btn btn-primary disabled" : "btn btn-primary active";
+        return (countArray[index] <= 0) ? "btn btn-shop disabled" : "btn btn-shop active";
     }
 
     const plusButtonClassSell = (index: number): string => {
         const stuffName = contextData.stuffNames[index];
         const qtyInHand = contextData.stuffOnHand.get(stuffName) ?? 0;
         const selectedQty = countArray[index];
-        return (qtyInHand <= selectedQty) ? "btn btn-primary disabled" : "btn btn-primary active";
+        return (qtyInHand <= selectedQty) ? "btn btn-shop disabled" : "btn btn-shop active";
     }
 
     const minusButtonClassBuy = (index: number): string => {
-        return (countArray[index] <= 0) ? "btn btn-primary disabled" : "btn btn-primary active";
+        return (countArray[index] <= 0) ? "btn btn-shop disabled" : "btn btn-shop active";
     }
 
     const plusButtonClassBuy = (index: number): string => {
-        return ((totalPrice + priceList[index]) > totalFunds) ? "btn btn-primary disabled" : "btn btn-primary active";
+        return ((totalPrice + priceList[index]) > totalFunds) ? "btn btn-shop disabled" : "btn btn-shop active";
     }
 
 

@@ -11,4 +11,11 @@ enum EventName {
     DAILY_PRICE_UPDATE_EVENT
 }
 
-export default EventName;
+enum EventType {
+    RANDOM_PLACE_EVENT,
+    RANDOM_USER_EVENT,
+    RECLAIM_DEBT_EVENT,
+    GAME_OVER_EVENT
+}
+
+export { EventName, EventType };

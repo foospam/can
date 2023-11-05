@@ -1,16 +1,21 @@
 import State from "../model/auxiliaries/State";
-import Shop from "./Shop2";
+import Shop from "./Shop";
 import { ReactDOM } from 'react-dom/client'
 import Player from "../model/Player";
 import ContextDataObject from "../model/auxiliaries/ContextDataObject";
 import { Modal, Button } from "react-bootstrap";
 import React from 'react';
+import { ReclaimDebtEventModal } from "./EventScreens";
+import EventQueue from "../model/events/EventQueue";
+import { EventType, EventName } from "../model/events/EventName";
+import Event from "../model/events/Event";
 
 interface MainSelectionMenuProps {
   switchState: (stateName: string) => void
   player: Player
   contextData: ContextDataObject
   updateContext: (context: ContextDataObject) => void
+  eventQueue: Event[]
 }
 
 interface PopUpModalProps {
@@ -19,10 +24,10 @@ interface PopUpModalProps {
   text: string
 }
 
-function PopUpModal({ show, handleClose, text } : PopUpModalProps) {
+function PopUpModal({ show, handleClose, text }: PopUpModalProps) {
   return (
     <Modal show={show} onHide={handleClose} dialog-class-name="modal-center">
-{/*       <Modal.Header closeButton>
+      {/*       <Modal.Header closeButton>
         <Modal.Title>Let's do nothing</Modal.Title>
       </Modal.Header> */}
       <Modal.Body>
@@ -37,14 +42,42 @@ function PopUpModal({ show, handleClose, text } : PopUpModalProps) {
   );
 }
 
-function MainSelectionMenu({ switchState, player, contextData, updateContext }: MainSelectionMenuProps) {
+
+function MainSelectionMenu({ switchState, player, contextData, updateContext, eventQueue }: MainSelectionMenuProps) {
+
+  console.log("EXECUTING: MAIN SELECTION MENU 1");
 
   const [showPopup, setShowPopup] = React.useState(false);
+  /* const [newEventAvailable, setNewEventAvailable] = React.useState(eventAvailable); */
   const handleShowPopup = () => setShowPopup(true);
   const handleClosePopup = () => {
     player.getGameDate().updateDate(1);
     updateContext(new ContextDataObject(player));
-    setShowPopup(false);}
+    setShowPopup(false);
+  }
+  /* const [currentEvent, setCurrentEvent] = React.useState<Event | null>(); */
+  const [showReclaimDebtEvent, setShowReclaimDebtEvent] = React.useState<boolean>(false);
+
+
+  /* const nextEvent : Event | null = EventQueue.poll();
+  console.log("NextEvent: "+nextEvent);
+  console.log(nextEvent);
+ */
+
+  const currentEvent = eventQueue.shift();
+  console.log(currentEvent);
+
+
+  const renderReclaimDebtEvent = () => {
+    if (contextData.userStats.get("debtDays") === -1) {
+      console.log("Reclaiming debt event");
+      return (<ReclaimDebtEventModal   
+        player={player}
+        updateContext={updateContext} />)
+    }
+  }
+
+  console.log("Show reclaim debt event "+showReclaimDebtEvent)
 
 
   const goToShop = () => {
@@ -79,7 +112,6 @@ function MainSelectionMenu({ switchState, player, contextData, updateContext }: 
 
 
 
-
   return (
     <>
       <div className="container h-100" id="mainSelectionMenu">
@@ -106,7 +138,8 @@ function MainSelectionMenu({ switchState, player, contextData, updateContext }: 
             <button className="btn btn-transp btn-block w-100 h-100 p-2" onClick={layDown}>Do nothing</button>
           </div>
         </div>
-        <PopUpModal show={showPopup} handleClose={handleClosePopup} text={"All right! Let's do nothing and let us see what the new day brings you!"}/>
+        <PopUpModal show={showPopup} handleClose={handleClosePopup} text={"All right! Let's do nothing and let us see what the new day brings you!"} />
+        {renderReclaimDebtEvent()}
       </div>
     </>
   )

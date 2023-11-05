@@ -11,7 +11,10 @@ class EventFactory {
     static reclaimDebtEvent: Event;
     static gameOverEvent: GameOverEvent;
 
-    private constructor() { }
+    private constructor() { 
+    }
+
+    public static
 
     public static initializeEvents(player: Player): void {
         EventFactory.addEventWithFrequency(EventFactory.randomPlaceEvents, EventName.PRICE_DECREASE_EVENT);

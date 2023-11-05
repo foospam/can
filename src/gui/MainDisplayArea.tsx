@@ -8,71 +8,79 @@ import BusStation from "./BusStation"
 import Bank from "./Bank";
 import LoanSharkScreen from "./LoanSharkScreen";
 import HospitalScreen from "./HospitalScreen";
+import { ReclaimDebtEventModal } from "./EventScreens";
+import EventQueue from "../model/events/EventQueue";
+import { EventType } from "../model/events/EventName";
+import Event from "../model/events/Event";
 
 interface MainDisplayAreaProps {
   state: State
   player: Player
-  contextData : ContextDataObject
-  updateContext: (context : ContextDataObject) => void;
+  contextData: ContextDataObject
+  updateContext: (context: ContextDataObject) => void;
+  eventQueue: Event[];
 }
 
-function MainDisplayArea({ state, player, contextData, updateContext }: MainDisplayAreaProps) {
+function MainDisplayArea({ state, player, contextData, updateContext, eventQueue }: MainDisplayAreaProps) {
 
-/* 
-  const MainDisplayArea = React.useRef();
-  MainDisplayArea.current = {
-    addEvent : (event : Event) => setEventList()
-  } */
+  /* 
+    const MainDisplayArea = React.useRef();
+    MainDisplayArea.current = {
+      addEvent : (event : Event) => setEventList()
+    } */
+
+
+    console.log("EXECUTING: MAIN DISPLAY AREA");
 
   const [internalState, setInternalState] = React.useState<string>("MainSelectionMenu");
-  const switchState = (state: string) : void => {
+  const switchState = (state: string): void => {
     setInternalState(state);
   }
 
-  const currentState = (internalState : string) => {
+  const currentState = (internalState: string) => {
     switch (internalState) {
       case "MainSelectionMenu": {
         return (
-          <MainSelectionMenu switchState={switchState} player={player} contextData={contextData} updateContext={updateContext}/>
+          <MainSelectionMenu switchState={switchState} player={player} contextData={contextData} updateContext={updateContext} eventQueue={eventQueue}/>
         )
       }
         break;
       case "BuyShop": {
         return (
-          <Shop switchState={switchState} player={player} contextData={contextData} updateContext={updateContext} mode="buy"/>
+          <Shop switchState={switchState} player={player} contextData={contextData} updateContext={updateContext} mode="buy" />
         )
       }
-      break;
+        break;
       case "SellStuff": {
         return (
-          <Shop switchState={switchState} player={player} contextData={contextData} updateContext={updateContext} mode="sell"/>
+          <Shop switchState={switchState} player={player} contextData={contextData} updateContext={updateContext} mode="sell" />
         )
       }
-      break;
+        break;
       case "BusStation": {
         return (
-          <BusStation switchState={switchState} player={player} contextData={contextData} updateContext={updateContext}/>
+          <BusStation switchState={switchState} player={player} contextData={contextData} updateContext={updateContext} />
         )
       }
-      break;
+        break;
       case "Bank": {
         return (
-          <Bank switchState={switchState} player={player} contextData={contextData} updateContext={updateContext}/>
+          <Bank switchState={switchState} player={player} contextData={contextData} updateContext={updateContext} />
         )
       }
-      break;
+        break;
       case "LoanSharkScreen": {
         return (
-          <LoanSharkScreen switchState={switchState} player={player} contextData={contextData} updateContext={updateContext}/>
+          <LoanSharkScreen switchState={switchState} player={player} contextData={contextData} updateContext={updateContext} />
         )
       }
-      break;
+        break;
       case "HospitalScreen": {
         return (
-          <HospitalScreen switchState={switchState} player={player} contextData={contextData} updateContext={updateContext}/>
+          <HospitalScreen switchState={switchState} player={player} contextData={contextData} updateContext={updateContext} />
         )
       }
-      break;
+        break;
 
     }
   }

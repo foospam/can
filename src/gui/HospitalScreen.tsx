@@ -50,28 +50,36 @@ function HospitalScreen({ state, switchState, player, contextData, updateContext
 
     return (
 
-
-        
-            <div className="row h-100">
+        <div className="row h-100" id="hospitalScreen">
+            <div className="col-12">
                 <div className="d-flex align-items-center justify-content-center">
                     <label>Welcome to the hospital!
                         <br></br>
                         We can fix you up, but it will cost you {player.getHealingCost()} bucks.
+                        <br></br>
+                        <br></br>
                     </label>
                 </div>
-                <div className="d-flex align-items-center justify-content-center">
-                    <button type="button" className="btn btn-secondary" id="borrowMoney" onClick={payFees}>
-                        Heal me
-                    </button>
-                    <button type="button" className="btn btn-secondary" id="exit" onClick={goBack}>
-                        Back
-                    </button>
-                </div>
-                <div className="d-flex align-items-center justify-content-center">
-                    <label>{messageValue}</label>
+                <div className="row h-100">
+                    <div className="col-6">
+                        <div className="d-flex align-items-center justify-content-center">
+                            <button type="button" className="btn btn-secondary" id="borrowMoney" onClick={payFees}>
+                                Heal me
+                            </button>
+                        </div>
+                    </div>
+                    <div className="col-6">
+                        <button type="button" className="btn btn-secondary" id="exit" onClick={goBack}>
+                            Back
+                        </button>
+                    </div>
+                    <div className="col-12">
+                        <label>{messageValue}</label>
+                    </div>
                 </div>
             </div>
-        
+
+        </div>
 
     )
 

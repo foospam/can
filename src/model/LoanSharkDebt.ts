@@ -2,6 +2,9 @@ import MethodAnswers from './MethodAnswers.ts';
 import GameSettings from './GameSettings.ts';
 import Player from './Player.ts';
 import TimeListener from './auxiliaries/TimeListener.ts';
+import EventQueue from './events/EventQueue.ts';
+import Event from './events/Event.ts';
+import { EventName, EventType } from './events/EventName.ts';
 /* import EventFactory from "/model/events/EventFactory.ts";
 import TimeListener from "/model/controller/TimeListener.ts"; */
 
@@ -61,12 +64,12 @@ class LoanSharkDebt implements TimeListener {
         this.paymentPeriod -= days;
         if (this.paymentPeriod == -1) {
             this.overdue += 1;
-            /* EventFactory.pushDebtEvent(); */
+            EventQueue.add(new Event(EventName.RECLAIM_DEBT_EVENT, EventType.RECLAIM_DEBT_EVENT, ["1"]))
         }
     }
 
     public raiseDebt(): void {
-        this.value = this.value * (1 + GameSettings.INTEREST_RATE / 100);
+        this.value = Math.floor(this.value * (1 + GameSettings.INTEREST_RATE / 100));
     }
 
     private getMaxCredit(player: Player): number {
@@ -102,7 +105,7 @@ class LoanSharkDebt implements TimeListener {
         this.paymentPeriod = 0;
     }
 
-    extendPaymentPeriod(): void {
+    public extendPaymentPeriod(): void {
         this.paymentPeriod = 10;
     }
 

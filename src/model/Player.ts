@@ -357,9 +357,9 @@ class Player /* implements Fighter */ {
         this.location = location;
     }
 
-/*     setHarm(harm: number): void {
+    public setHarm(harm: number): void {
         this.setHealth(this.health - harm);
-    } */
+    }
 
     getOverdue(): number {
         return this.debt.overdue;

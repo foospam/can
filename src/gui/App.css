@@ -111,10 +111,27 @@
   }
 
   .shopRow {
-    background-color: rgba(0,0,0,.7);
+    background-color: rgba(0,0,0,.8);
     padding: 10px;
     border-radius: 10px;
     margin: 10px;
+  }
+
+  #hospitalScreen {
+    background-image: url("../assets/images/infirmary-1.jpg");
+    align-items: center;
+    border-width: 10px;
+    border-color: black;
+    align-items: flex-end;
+  }
+
+  #hospitalScreen > * {
+    background-color: rgba(0,0,0,.8);
+    padding: 10px;
+    border-radius: 10px;
+    margin: 10px;
+    color: white;
+    font-weight: 500;
   }
 
   .shopRow > * {
@@ -141,6 +158,16 @@
 
   #mainDisplayArea{
     border-radius: 15px;
+  }
+
+  .btn-shop {
+    margin: 2px;
+  }
+
+  .btn-shop.disabled {
+    color: grey;
+    border-color: grey;
+    border-width: 2px;
   }
 
 
